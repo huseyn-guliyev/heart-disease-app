@@ -1,0 +1,8 @@
+pandas==1.4.1
+streamlit==1.7.0
+joblib==0.17.0
+numpy==1.19.5
+PIL==8.0.1
+plotly==5.3.0
+sklearn==0.24.2
+lime==7.9.0
