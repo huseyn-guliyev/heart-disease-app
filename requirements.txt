@@ -6,3 +6,4 @@ Pillow==9.0.1
 plotly==5.6.0
 scikit_learn==1.0.2
 streamlit==1.7.0
+lightgbm==3.2.1
