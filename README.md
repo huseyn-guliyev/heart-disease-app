@@ -4,6 +4,6 @@ Sample Streamlit app in order to show demo case. Input your input and get the pr
 
 Data was taken from Kaggle.
 
-visit here to experience the app.
+visit [here] to experience the app.
 
 [here]: https://share.streamlit.io/huseyn-guliyev/heart-disease-app/main/application.py
