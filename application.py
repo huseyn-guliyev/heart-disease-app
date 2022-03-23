@@ -5,8 +5,8 @@ import numpy as np
 from PIL import Image
 import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split
-import lime
-import lime.lime_tabular
+import shap
+
 
 CURRENT_THEME = "light"
 df = pd.read_csv("heart.csv")
@@ -16,21 +16,43 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.33, random_state=42)
 im = Image.open("clipart-223147.jpg")
 
+st.set_page_config(page_title= 'Heart disease probability', page_icon = im,layout = 'wide')
+
+
+
 def calculate():
      with st.spinner('Calculating...'):
-          st.write("Probability of heart disease: {}%".format(probability))
+          st.write("### Probability of heart disease: {}%".format(probability))
           st.write(fig)
-          explainer = lime.lime_tabular.LimeTabularExplainer(np.array(X_train) ,class_names=['not disease', 'disease'], 
-                                                   feature_names = list(df.columns),
-                                                    discretize_continuous=True
-                                                  )
-          exp = explainer.explain_instance(np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
-                                    thalach, exang, oldpeak, slope, ca, thal]), model.predict_proba, 
-                                 num_features=13, top_labels=1)
-          st.components.v1.html(exp.as_html(show_table=False, show_all=True, show_predicted_value = False, predict_proba=False), height=450)
+          explainer = shap.TreeExplainer(model)
 
-st.set_page_config(page_title= 'Heart disease probability', page_icon = im,layout = 'wide')
+          # Calculate Shap values
+          shap_values = explainer.shap_values(X)
+          explainer = shap.TreeExplainer(model)
+
+          # Calculate Shap values
+          shap_values = explainer.shap_values(np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
+                                    thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13))
+          shap.initjs()
+          fig2 = shap.force_plot(explainer.expected_value[1], shap_values[1], 
+                         np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
+                                    thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13), 
+                         feature_names = X.columns, link="logit")
+          shap_html = f"<head>{shap.getjs()}</head><body>{fig2.html()}</body>"
+          st.write('Explanation')
+          st.components.v1.html(shap_html)
+          st.write('''
+          Note that 
+          \n
+          "sex" will show 1 if "sex" is "male", otherwise 0 ,
+          \n
+          "fbs" will show 1 if "fbs" is "True", otherwise 0,
+          \n
+          "exang" will show 1 if "exang" is "yes", otherwise 0
+          ''')
+
 col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
+
 
 with col1:
      #1 age
@@ -111,6 +133,7 @@ fig = go.Figure(go.Indicator(
     ))
 fig.update_layout(height = 200,
                     width = 600)
+
 with col4:
      if _claculate:
-        calculate()     
+          calculate()
