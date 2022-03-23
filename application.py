@@ -125,13 +125,17 @@ probability = round(model.predict_proba(np.asarray([age, sex, cp, trestbps, chol
 color = 'red' if probability > 50 else 'green'
 
 fig = go.Figure(go.Indicator(
-    mode = "gauge",
-    gauge = {'shape': "bullet", 'axis':{'range':[0,100]}, 'bar':{'color':color}},
-    value = probability,
-    delta = {'reference': 100},
     domain = {'x': [0, 1], 'y': [0, 1]},
-    ))
-fig.update_layout(height = 200,
+    value = probability,
+    mode = "gauge+number",
+    gauge = {'axis': {'range': [None, 100]},
+		'bar': {'color': color},
+             'steps' : [
+                 {'range': [0, 50], 'color': "rgb(204,255,197)"},
+                 {'range': [50, 100], 'color': "rgb(255,185,185)"}],
+             'threshold' : {'line': {'color': "rgb(0,0,255)", 'width': 4}, 'thickness': 0.75, 'value': 50}}))
+
+fig.update_layout(height = 350,
                     width = 600)
 
 with col4:
