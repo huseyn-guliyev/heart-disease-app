@@ -22,7 +22,7 @@ st.set_page_config(page_title= 'Heart disease probability', page_icon = im,layou
 
 def calculate():
      with st.spinner('Calculating...'):
-          st.write("### Probability of heart disease: {}%".format(probability))
+          st.write("### [Probability of heart disease: {}%](https://share.streamlit.io/huseyn-guliyev/heart-disease-app/main/application.py)".format(probability))
           st.write(fig)
           explainer = shap.TreeExplainer(model)
 
