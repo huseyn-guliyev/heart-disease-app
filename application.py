@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 import plotly.graph_objects as go
 from sklearn.model_selection import train_test_split
-import shap
+#import shap
 
 
 CURRENT_THEME = "light"
@@ -24,32 +24,32 @@ def calculate():
      with st.spinner('Calculating...'):
           st.write("### Probability[*](https://github.com/huseyn-guliyev/heart-disease-app) of heart disease: {}%".format(probability))
           st.write(fig)
-          explainer = shap.TreeExplainer(model)
+          #explainer = shap.TreeExplainer(model)
 
           # Calculate Shap values
-          shap_values = explainer.shap_values(X)
-          explainer = shap.TreeExplainer(model)
+          #shap_values = explainer.shap_values(X)
+          #explainer = shap.TreeExplainer(model)
 
           # Calculate Shap values
-          shap_values = explainer.shap_values(np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
-                                    thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13))
-          shap.initjs()
-          fig2 = shap.force_plot(explainer.expected_value[1], shap_values[1], 
-                         np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
-                                    thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13), 
-                         feature_names = X.columns, link="logit")
-          shap_html = f"<head>{shap.getjs()}</head><body>{fig2.html()}</body>"
-          st.write('Explanation')
-          st.components.v1.html(shap_html)
-          st.write('''
-          Note that 
-          \n
-          "sex" will show 1 if "sex" is "male", otherwise 0 ,
-          \n
-          "fbs" will show 1 if "fbs" is "True", otherwise 0,
-          \n
-          "exang" will show 1 if "exang" is "yes", otherwise 0
-          ''')
+          #shap_values = explainer.shap_values(np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
+          #                          thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13))
+          #shap.initjs()
+          #fig2 = shap.force_plot(explainer.expected_value[1], shap_values[1], 
+          #               np.asarray([age, sex, cp, trestbps, chol, fbs, restecg, 
+          #                          thalach, exang, oldpeak, slope, ca, thal]).reshape(1,13), 
+          #               feature_names = X.columns, link="logit")
+          #shap_html = f"<head>{shap.getjs()}</head><body>{fig2.html()}</body>"
+          #st.write('Explanation')
+          #st.components.v1.html(shap_html)
+          #st.write('''
+          #Note that 
+          #\n
+          #"sex" will show 1 if "sex" is "male", otherwise 0 ,
+          #\n
+          #"fbs" will show 1 if "fbs" is "True", otherwise 0,
+          #\n
+          #"exang" will show 1 if "exang" is "yes", otherwise 0
+          #''')
 
 col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
 
